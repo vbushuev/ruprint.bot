@@ -21,15 +21,19 @@ import Layout from './containers/Layout'
 import { Provider } from 'react-redux'
 
 import { createStore, applyMiddleware } from 'redux'
+
 import {createLogger} from 'redux-logger'
 import thunk from 'redux-thunk'
 
 import rootReducer from './reducers'
-import {fetchCitiesIfNeeded} from './actions';
+import {fetchCitiesIfNeeded,activityList,executorList} from './actions';
 
-const store = createStore(rootReducer,applyMiddleware(thunk,createLogger()));
-store
-    .dispatch(fetchCitiesIfNeeded())
+// const store = createStore(rootReducer,applyMiddleware(thunk,createLogger()));
+const store = createStore(rootReducer,applyMiddleware(thunk));
+
+store.dispatch(fetchCitiesIfNeeded());
+store.dispatch(activityList());
+store.dispatch(executorList());
 
 render(<Provider store={store}>
     <Layout/>

@@ -11,7 +11,7 @@ class Account extends Model
     protected $fillable = [
         'executor_id','amount'
     ];
-    public function chat(){
-        return $this->belognsTo('App\Model\Executor');
+    public function executor(){
+        return $this->belongsTo('App\Model\Executor');
     }
 }

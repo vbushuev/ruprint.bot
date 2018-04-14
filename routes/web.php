@@ -21,6 +21,7 @@ Route::middleware(['auth'])->group(function(){
         ->name('react');
     Route::apiResource('city','CityController');
     Route::apiResource('activity','ActivityController');
+    Route::apiResource('executor','ExecutorController');
 });
 Route::any('bot','BotController@index')->name('bot');
 

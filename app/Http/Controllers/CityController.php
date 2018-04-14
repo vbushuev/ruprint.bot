@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Log;
 use App\Model\City;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ class CityController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         return response()->json(City::with(['executors'])->get());
     }
@@ -35,7 +36,10 @@ class CityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Log::debug($request->all());
+        $city = City::create($request->all());
+        $city->load(['executors']);
+        return response()->json($city);
     }
 
     /**
@@ -69,7 +73,10 @@ class CityController extends Controller
      */
     public function update(Request $request, City $city)
     {
-        //
+        Log::debug($city);
+        $city->update($request->all());
+        $city->load(['executors']);
+        return response()->json($city);
     }
 
     /**
@@ -78,8 +85,10 @@ class CityController extends Controller
      * @param  \App\Model\City  $city
      * @return \Illuminate\Http\Response
      */
-    public function destroy(City $city)
+    public function destroy(Request $request,City $city)
     {
-        //
+        Log::debug($city);
+        $city->delete();
+        return $this->index($request);
     }
 }

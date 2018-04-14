@@ -9,7 +9,7 @@ class Executor extends Model
 {
     use SoftDeletes;
     protected $fillable = [
-        'name', 'last_name', 'chat_id', 'deposited', 'activity_id','city_id'
+        'name', 'last_name', 'deposited', 'activity_id','city_id','phone'
     ];
     protected $hidden = [
         'activity_id','city_id'
@@ -17,6 +17,9 @@ class Executor extends Model
     protected $casts = [
         'deposited'=>'integer'
     ];
+    public function chat(){
+        return $this->hasMany('App\Model\Chat');
+    }
     public function account(){
         return $this->hasOne('App\Model\Account');
     }

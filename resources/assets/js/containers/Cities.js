@@ -1,29 +1,31 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
-
-import { Container, Segment, Button, Menu, Image, Icon, Header,Item } from 'semantic-ui-react'
+import { Container, Segment, Button, Menu, Image, Icon, Header,Item, Divider } from 'semantic-ui-react'
 
 import City from '../components/City';
-
+import Add from '../components/Forms/City/Add';
 
 class Cities extends Component {
     constructor(props){
         super(props);
-        // this.loadCities();
     }
-    loadCities = () => {
-        this.props.getCities();
+    state = { adding: false };
+    componentDidMount(){
+        this.props.actions.fetchCitiesIfNeeded()
     }
     render() {
-        const {cities, getCities} = this.props;
+        const {cities, actions} = this.props;
         return (
             <Container>
-                <Header as='h3'>Города</Header>
-                <Button onClick={getCities}>load</Button>
-                <Item.Group>
-                    { cities.data.map( (row,i) => {return <City key={i} city={row}/>}) }
+                <Header>Города</Header>
+                <Button icon primary onClick={ (e) => this.setState({ adding:!this.state.adding }) }>
+                    <Icon name={this.state.adding?"angle up":"plus"}/>
+                </Button>
+                {this.state.adding?<Add handleSubmit={actions.createCity}/>:''}
+                <Divider horizontal>Список</Divider>
+                <Item.Group divided>
+                    { cities.data.map( (row,i) => {return <City key={i} city={row} handleUpdate={actions.updateCity} handleDelete={actions.deleteCity}/>}) }
                 </Item.Group>
             </Container>
         );
@@ -31,7 +33,7 @@ class Cities extends Component {
 }
 Cities.propTypes = {
     cities: PropTypes.object,
-    getCities: PropTypes.func
+    actions: PropTypes.object
 }
 export default connect((state)=>{
     return {

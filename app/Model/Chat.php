@@ -12,23 +12,20 @@ class Chat extends Model
     protected $primaryKey = 'id'; // or null
     public $incrementing = false;
     protected $fillable = [
-        'id','first_name', 'last_name', 'username', 'deposited','language','activity_id','city_id'
+        'id','first_name', 'last_name', 'username', 'deposited','language','executor_id'
     ];
     protected $hidden = [
-        'activity_id','city_id'
+        'executor_id'
     ];
-    protected $casts = [
-        'deposited'=>'integer'
-    ];
-    public function account(){
-        return $this->hasOne('App\Model\Account');
+    public function executor(){
+        return $this->belongsTo('App\Model\Executor');
     }
-    public function activity(){
-        return $this->belongsTo('App\Model\Activity');
-    }
-    public function city(){
-        return $this->belongsTo('App\Model\City');
-    }
+    // public function activity(){
+    //     return $this->belongsTo('App\Model\Activity');
+    // }
+    // public function city(){
+    //     return $this->belongsTo('App\Model\City');
+    // }
     public function messages(){
         return $this->hasMany('App\Model\Message');
     }

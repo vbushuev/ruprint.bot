@@ -1,4 +1,4 @@
-import {CITIES_REQUEST,CITIES_SUCCESS,CITIES_FAILURE} from '../constants';
+import * as ACTION from '../constants';
 const initialState = {
     fetching:false,
     loaded:false,
@@ -6,13 +6,28 @@ const initialState = {
 };
 
 export default function cities(state = initialState,action) {
+
     switch(action.type){
-        case CITIES_REQUEST:
+        case ACTION.CITIES_REQUEST:
             return {...state, fetching: true};
-        case CITIES_SUCCESS:
+        case ACTION.CITIES_SUCCESS:
             return {...state, fetching: false, data: action.payload.data};
-        case CITIES_FAILURE:
+        case ACTION.CITIES_FAILURE:
             return {...state, fetching: false};
+        case ACTION.CITY_CREATE_SUCCESS:
+            let dd = state.data.slice();
+            dd.push(action.payload.data);
+            return {...state, fetching: false, data: dd};
+        case ACTION.CITY_UPDATE_SUCCESS:
+            const newCity = action.payload.data;
+            let dl = [];
+            state.data.map( (city,i) => {
+                dl.push((city.id == newCity.id)?newCity:city);
+            });
+
+            return {...state, fetching: false, data: dl};
+        case ACTION.CITY_DELETE_SUCCESS:
+            return {...state, fetching: false, data: action.payload.data};
         default:
             return state;
     }

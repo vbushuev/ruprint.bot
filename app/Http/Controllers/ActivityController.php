@@ -14,7 +14,7 @@ class ActivityController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(Activity::with(['executors'])->get());
     }
 
     /**
@@ -35,7 +35,9 @@ class ActivityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $activity = Activity::create($request->all());
+        $activity->load(['executors']);
+        return response()->json($activity);
     }
 
     /**
@@ -69,7 +71,9 @@ class ActivityController extends Controller
      */
     public function update(Request $request, Activity $activity)
     {
-        //
+        $activity->update($request->all());
+        $activity->load(['executors']);
+        return response()->json($activity);
     }
 
     /**
@@ -80,6 +84,7 @@ class ActivityController extends Controller
      */
     public function destroy(Activity $activity)
     {
-        //
+        $activity->delete();
+        return $this->index();
     }
 }
